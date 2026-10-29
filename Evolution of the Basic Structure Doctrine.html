@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How the Basic Structure Doctrine evolved</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400&family=Public+Sans:wght@400;600&display=swap">
+<style>
+:root{--bg:#eef1ef;--surf:#fff;--ink:#1b2b3a;--mute:#5a6b78;--line:#c9d3d0;--court:#0f6b6b;--leg:#a8741a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121c24;--surf:#1a2733;--ink:#e6edf1;--mute:#9db0bc;--line:#2d3f4d;--court:#4fc1bd;--leg:#e0a84a}}
+:root[data-theme="dark"]{--bg:#121c24;--surf:#1a2733;--ink:#e6edf1;--mute:#9db0bc;--line:#2d3f4d;--court:#4fc1bd;--leg:#e0a84a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Newsreader",Georgia,serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+h1{font-size:clamp(2rem,6vw,3rem);line-height:1.1;margin:0 0 12px;font-weight:600}
+.lede{color:var(--mute);margin:0 0 28px;max-width:60ch}
+.key{display:flex;gap:20px;flex-wrap:wrap;font:14px "Public Sans",sans-serif;color:var(--mute);margin-bottom:8px}
+.key i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.chart{background:var(--surf);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:36px;overflow-x:auto}
+.chart svg{display:block;min-width:560px;width:100%;height:auto}
+ol{list-style:none;margin:0;padding:0 0 0 22px;border-left:2px solid var(--line)}
+li{position:relative;margin:0 0 14px}
+li::before{content:"";position:absolute;left:-30px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--court);border:2px solid var(--bg)}
+li.leg::before{background:var(--leg);border-radius:2px}
+button{all:unset;display:block;width:100%;cursor:pointer;background:var(--surf);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+button:focus-visible{outline:3px solid var(--court);outline-offset:2px}
+.yr{font:600 14px "Public Sans",sans-serif;color:var(--mute)}
+.case{display:block;font-size:1.2rem;font-weight:600}
+.ruling{display:block;margin-top:2px}
+.more{display:none;margin:10px 0 0;padding-top:10px;border-top:1px solid var(--line);color:var(--mute)}
+li.open .more{display:block}
+li.open button{border-color:var(--court)}
+li.leg.open button{border-color:var(--leg)}
+footer{font:14px "Public Sans",sans-serif;color:var(--mute);margin-top:36px}
+</style>
+</head>
+<body>
+<main>
+<h1>How India’s basic structure doctrine evolved</h1>
+<p class="lede">Can Parliament amend any part of the Constitution? Between 1951 and 2015 the Supreme Court moved from “yes, without limit” to “no, not the core.” Select a case to see what it held.</p>
+<div class="key"><span><i style="background:var(--court)"></i>Court ruling</span><span><i style="background:var(--leg);border-radius:2px"></i>Legislative move</span></div>
+<div class="chart" role="img" aria-label="Line chart showing how far the Court limited Parliament's amending power across cases from 1951 to 2015: low in 1951 and 1965, high in 1967, then settling between 65 and 85 after 1973, with a dip at the 1976 amendment.">
+<svg id="chart" viewBox="0 0 640 230"></svg>
+</div>
+<ol id="list"></ol>
+<footer>The chart is an illustrative index of how strongly each event limited Parliament’s amending power, not a measured statistic. This is a summary for learning, not legal advice.</footer>
+</main>
+<script>
+var E=[
+{y:1951,c:"Shankari Prasad v. Union of India",r:"Parliament can amend fundamental rights.",d:"The Court held that “law” in Article 13 means ordinary legislation, not constitutional amendments, so Article 368 allowed amending any part of the Constitution.",v:5},
+{y:1965,c:"Sajjan Singh v. State of Rajasthan",r:"The 1951 view survives, narrowly.",d:"A 3–2 majority upheld the 17th Amendment. Justice Mudholkar doubted whether basic features could be changed at all, planting the idea that later grew.",v:10},
+{y:1967,c:"Golaknath v. State of Punjab",r:"Fundamental rights are beyond amendment.",d:"By 6–5, the Court said amendments are “law” under Article 13 and cannot abridge fundamental rights. It used prospective overruling to avoid undoing past reforms.",v:90},
+{y:1971,c:"24th and 25th Amendments",r:"Parliament pushes back.",d:"Parliament declared that it could amend any provision, including fundamental rights, and that amendments were not “law” under Article 13.",v:20,leg:1},
+{y:1973,c:"Kesavananda Bharati v. State of Kerala",r:"Parliament can amend, but not the basic structure.",d:"A 13-judge bench ruled 7–6 that Article 368 does not let Parliament destroy the Constitution’s essential features. Golaknath was overruled, but the limit it feared was kept in a new form.",v:65},
+{y:1975,c:"Indira Nehru Gandhi v. Raj Narain",r:"Doctrine first used to strike an amendment.",d:"The Court struck down a clause of the 39th Amendment that shielded the Prime Minister’s election from review, citing free and fair elections and the rule of law.",v:70},
+{y:1976,c:"42nd Amendment",r:"Parliament tries to bar review of amendments.",d:"It added clauses (4) and (5) to Article 368, declaring amendments immune from court challenge and amending power unlimited.",v:15,leg:1},
+{y:1980,c:"Minerva Mills v. Union of India",r:"Limited amending power is itself basic structure.",d:"The Court struck down the 1976 clauses, reasoning that Parliament cannot use a limited power to give itself unlimited power. It also stressed balance between fundamental rights and directive principles.",v:80},
+{y:1981,c:"Waman Rao v. Union of India",r:"A cut-off date for the doctrine.",d:"The Court applied the doctrine to amendments after 24 April 1973, the date of Kesavananda, and left earlier laws in the Ninth Schedule protected.",v:72},
+{y:1994,c:"S.R. Bommai v. Union of India",r:"Federalism and secularism join the list.",d:"The Court treated both as basic structure and held that the imposition of President’s Rule is open to judicial review.",v:78},
+{y:2007,c:"I.R. Coelho v. State of Tamil Nadu",r:"Ninth Schedule laws can be tested.",d:"Laws placed in the Ninth Schedule after 24 April 1973 can be challenged if they violate fundamental rights that form part of the basic structure.",v:82},
+{y:2015,c:"Supreme Court Advocates-on-Record Assn. v. Union of India",r:"Judicial independence is basic structure.",d:"A 4–1 Constitution Bench struck down the 99th Amendment and the National Judicial Appointments Commission it created.",v:85}
+];
+var list=document.getElementById("list");
+E.forEach(function(e,i){
+ var li=document.createElement("li");if(e.leg)li.className="leg";
+ var b=document.createElement("button");b.setAttribute("aria-expanded","false");
+ b.innerHTML='<span class="yr">'+e.y+'</span><span class="case">'+e.c+'</span><span class="ruling">'+e.r+'</span><p class="more">'+e.d+'</p>';
+ b.onclick=function(){var o=li.classList.toggle("open");b.setAttribute("aria-expanded",o)};
+ li.appendChild(b);list.appendChild(li);
+});
+var W=640,H=230,L=40,R=16,T=16,B=36,s=document.getElementById("chart"),n=E.length;
+function X(i){return L+i*(W-L-R)/(n-1)}function Y(v){return T+(100-v)*(H-T-B)/100}
+var h='';
+[0,50,100].forEach(function(v){h+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="var(--line)"/><text x="'+(L-6)+'" y="'+(Y(v)+4)+'" text-anchor="end" font-size="11" fill="var(--mute)" font-family="Public Sans,sans-serif">'+v+'</text>'});
+h+='<polyline fill="none" stroke="var(--court)" stroke-width="2.5" points="'+E.map(function(e,i){return X(i)+','+Y(e.v)}).join(' ')+'"/>';
+E.forEach(function(e,i){
+ h+='<circle cx="'+X(i)+'" cy="'+Y(e.v)+'" r="5" fill="'+(e.leg?'var(--leg)':'var(--court)')+'"/>';
+ h+='<text x="'+X(i)+'" y="'+(H-14)+'" text-anchor="middle" font-size="11" fill="var(--mute)" font-family="Public Sans,sans-serif">'+e.y+'</text>';
+});
+h+='<text x="'+L+'" y="10" font-size="11" fill="var(--mute)" font-family="Public Sans,sans-serif">Limit on Parliament’s amending power</text>';
+s.innerHTML=h;
+</script>
+</body>
+</html>
